@@ -1,0 +1,116 @@
+<dom-module id="demo-3">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      paper-material.menu {
+        width: 60%;
+        padding: 0px;
+      }
+
+      google-map {
+        height: 500px;
+      }
+
+
+    </style>
+    <style include="shared-styles"></style>
+
+    <carbon-location use-hash-as-path route="{{route}}"></carbon-location>
+
+    <!-- Two routes, one for the home page, and one for the tabs page. -->
+    <carbon-route route="{{route}}" pattern="/points" tail="{{tabsRoute}}" active="{{tabsActive}}"></carbon-route>
+    <carbon-route route="{{route}}" pattern="/" active="{{homeActive}}"></carbon-route>
+
+    <paper-scroll-header-panel main fixed>
+
+      <div class="homePage" hidden$="{{!homeActive}}">
+        <paper-icon-button icon="maps:map" style="margin: 16px -16px -16px 16px" on-tap="toggleView"></paper-icon-button>
+        <div class="layout vertical center">
+          <paper-material class="menu" elevation="1">
+            <template is="dom-if" if="{{mapView}}" restamp="true">
+              <google-map fit-to-markers>
+                <template is="dom-repeat" items="{{pages}}" index-as="index">
+                  <google-map-marker latitude="{{item.markerLat}}" longitude="{{item.markerLong}}"
+                  draggable="false" title="Title">
+                  <a href="#/points/{{item.name}}">Explore Point</a>
+                </google-map-marker>
+                </template>
+              </google-map>
+            </template>
+            <div hidden="{{mapView}}">
+              <div class="desktopPointsList">
+                <template is="dom-repeat" items="{{pages}}" index-as="index">
+                  <a href="#/points/{{item.name}}">
+                    <paper-item>
+                      <paper-item-body two-line>
+                        <div>{{item.title}}</div>
+                        <div secondary>{{item.description}}</div>
+                      </paper-item-body>
+                      <iron-icon icon="warning"></iron-icon>
+                    </paper-item>
+                  </a>
+                </template>
+              </div>
+            </div>
+          </paper-material>
+        </div>
+      </div>
+      <div class="lookoutsPage" hidden$="{{!tabsActive}}">
+        <!-- tabs-page is an element that handles routing within itself.
+             view-source for more details!
+          -->
+        <tabs-page id="tabsPage" pages="{{pages}}" selectedPage="{{selectedPageSetter}}" route="{{tabsRoute}}"></tabs-page>
+      </div>
+
+      <paper-toolbar>
+        <a hidden$="{{homeActive}}" href="#/">
+          <paper-icon-button icon="arrow-back"></paper-icon-button>
+        </a>
+
+        <div class="app-name">
+          <span class="moggill">Moggill</span><span class="walks">Walks</span>
+        </div>
+      </paper-toolbar>
+
+
+</paper-scroll-header-panel>
+
+
+  </template>
+  <script>
+    Polymer({
+      is: 'demo-3',
+      properties: {
+        pages: {
+          type: Array,
+          value: [
+            {name: 'ferry', title: 'Anstead', key:'01', description:'These are test elements to match with their specified key.', latitude:-27.5422893,longitude:152.7794284,zoom:'10',markerLat:-27.5422893,markerLong:152.7794284,markerTitle:'Hello',markerImg:'http://moggillhistorical.org.au/images/MoggillFerry1928.jpg',videoId:'dCWYLRNQdxw'},
+            {name: 'shield',title: 'Quarry Site', key:'02', description:'These are test elements to match with their specified key.', latitude:'',longitude:'',markerLat:'',markerLong:''},
+          ]
+        }
+      },
+      ready: function() {
+        this.async(function() {
+          // If the path is blank, redirect to /
+          if (!this.route.path) {
+            this.set('route.path', '/');
+          }
+        });
+        this.mapView = false;
+      },
+      toggleView: function() {
+        if (this.mapView == true) {
+          this.mapView = false;
+        } else {
+          this.mapView = true;
+        }
+      },
+      nextPoint: function() {
+
+      }
+    });
+  </script>
+</dom-module>

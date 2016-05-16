@@ -1,0 +1,48 @@
+<dom-module id="moggill-map">
+  <template>
+    <style include="shared-styles"></style>
+    <style include="iron-flex iron-flex-alignment"></style>
+    <style>
+    :host {
+      display: block;
+      @apply(--layout-vertical);
+      @apply(--layout-center);
+      width: 100%;
+    }
+
+    google-map {
+      height: 300px;
+    }
+    </style>
+
+    <paper-card>
+      <div class="card-content">
+        <h1>{{title}}</h1>
+        <p>
+          {{info}}
+        </p>
+        <google-map disable-default-ui map-type="hybrid" latitude="{{latitude}}" longitude="{{longitude}}" zoom="10">
+
+            <google-map-marker latitude="-27.583328" longitude="152.8603703"
+                     title="{{markerTitle}}" draggable="false" drag-events>
+        </google-map>
+      </div>
+    </paper-card>
+
+  </template>
+  <script>
+    Polymer({
+      is: 'moggill-map',
+      properties: {
+        title: {type: String},
+        info: {type: String},
+        latitude: {type: Number},
+        longitude: {type: Number},
+        zoom: {type: Number, value: 10},
+        markerLat: {type: Number},
+        markerLong: {type: Number},
+        markerTitle: {type: String},
+      },
+    });
+  </script>
+</dom-module>

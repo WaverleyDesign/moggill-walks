@@ -1,0 +1,120 @@
+<dom-module id="tabs-page">
+<template>
+<style>
+  paper-tabs {
+    background-color: var(--paper-blue-a100);
+  }
+  iron-pages {
+    width: 100%;
+    display: block;
+  }
+</style>
+<style include="shared-styles"></style>
+<carbon-route route="{{route}}" pattern="/:pointName" data="{{data}}"></carbon-route>
+<!--<paper-tabs selected='{{data.tabName}}' attr-for-selected="name">
+  <paper-tab name='foo'>Foo</paper-tab>
+  <paper-tab name='bar'>Bar</paper-tab>
+  <paper-tab name='baz'>Baz!</paper-tab>
+</paper-tabs>-->
+
+
+
+<div class="fixeddrawer">
+  <paper-menu>
+    <paper-submenu>
+      <paper-item class="menu-trigger">Ferry Route</paper-item>
+      <paper-menu class="menu-content sublist"  selected='{{data.pointName}}' attr-for-selected="name">
+        <paper-item name='ferry'>Ferry</paper-item>
+        <paper-item name='shield'>Shield</paper-item>
+        <paper-item name="aitcheson">Aitcheson</paper-item>
+        <paper-item name="aitcheson-st-mine">Aitcheson St. Mine</paper-item>
+        <paper-item name="riverside-colliery">Riverside Colliery</paper-item>
+        <paper-item name="mackay-house">Mackay House</paper-item>
+        <paper-item name="mackay-pineapple-farm">Mackay Pineapple Farm</paper-item>
+        <paper-item name="westaway">Westaway</paper-item>
+        <paper-item name="hanly-house">Hanly House</paper-item>
+        <paper-item name="methodist-church">Methodist Church</paper-item>
+        <paper-item name="anglican-church">Anglican Church</paper-item>
+        <paper-item name="catholic-church">Catholic Church</paper-item>
+        <paper-item name="montgomery-shop">Montgomery Shop</paper-item>
+        <paper-item name="dallinger">Dallinger</paper-item>
+      </paper-menu>
+    </paper-submenu>
+    <paper-submenu>
+      <paper-item class="menu-trigger">Secondary Route</paper-item>
+      <paper-menu class="menu-content sublist"  selected='{{data.pointName}}' attr-for-selected="name">
+        <paper-item name='dude'>Foo</paper-item>
+        <paper-item name='shield'>Bar</paper-item>
+        <paper-item name='baz'>Baz!</paper-item>
+      </paper-menu>
+    </paper-submenu>
+
+  </paper-menu>
+</div>
+
+<div class="marginalisedleft">
+  <iron-pages id='animatedPages'
+                   selected='{{selectedPage}}'
+                   attr-for-selected="name">
+
+  <template is="dom-repeat" items="{{pages}}" index-as="index">
+   <section name="{{item.name}}">
+     <moggill-filter key="{{item.key}}" pages="{{pages}}"></moggill-filter>
+   </section>
+  </template>
+
+</iron-pages>
+</div>
+
+<paper-material class="horizontal justified center layout bottom-sheet" elevation="4">
+  <paper-icon-button icon="chevron-left"></paper-icon-button>
+  <paper-icon-button icon="menu"></paper-icon-button>
+  <paper-icon-button icon="chevron-right" on-tap="nextPoint"></paper-icon-button>
+</paper-material>
+
+
+</template>
+<script>
+window.addEventListener('WebComponentsReady', function() {
+  Polymer({
+    is: 'tabs-page',
+    properties: {
+      route: {
+        type: Object,
+        notify: true
+      },
+      pages: {
+        type: Array,
+      },
+      selectedPage: {
+        type: Number,
+        notify: true
+      },
+    },
+    observers: [
+      'pageChanged(data.pointName)'
+    ],
+    pageChanged: function() {
+      // We assign to selectedPage here rather than just binding
+      // the selected property of iron-pages to selectedPage
+      // so that we can first figure out which animation to use in the
+      // transition.
+      var transitioningFrom = this.$.animatedPages.selected;
+      var transitioningTo = this.data.pointName;
+      var pagesInOrder = this.$.animatedPages.items.map(
+        function(x) {return x.getAttribute('name')});
+      if (pagesInOrder.indexOf(transitioningFrom) > pagesInOrder.indexOf(transitioningTo)) {
+        this.entryAnimation = 'slide-from-left-animation';
+        this.exitAnimation = 'slide-right-animation';
+      } else {
+        this.entryAnimation = 'slide-from-right-animation';
+        this.exitAnimation = 'slide-left-animation';
+      }
+
+      this.selectedPage = this.data.pointName;
+      // slide-from-left-animation
+    }
+  });
+});
+</script>
+</dom-module>

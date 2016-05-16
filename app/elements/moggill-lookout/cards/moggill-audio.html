@@ -1,0 +1,106 @@
+<dom-module id="moggill-audio">
+  <template>
+    <style include="shared-styles"></style>
+    <style include="iron-flex iron-flex-alignment"></style>
+    <style>
+    :host {
+      display: block;
+      @apply(--layout-vertical);
+      @apply(--layout-center);
+      width: 100%;
+    }
+    </style>
+
+    <audio id="audio" title="{{title}}" src="{{track}}">
+
+    </audio>
+
+    <paper-card>
+      <paper-progress id="progress" value="0" max="1000"></paper-progress>
+      <div class="card-actions horizontal justified center layout">
+        <paper-icon-button icon="info"></paper-icon-button>
+        <paper-icon-button id="play" hidden="{{isPlaying}}" class="play" on-tap="toggle" icon="av:play-circle-filled"></paper-icon-button>
+        <paper-icon-button id="pause" hidden="{{!isPlaying}}" class="play" on-tap="toggle" icon="av:pause-circle-filled"></paper-icon-button>
+        <span>
+          <span>{{_convertSecToMin(currentTime)}}</span> /
+          <span>{{_convertSecToMin(duration)}}</span>
+        </span>
+
+      </div>
+    </paper-card>
+
+  </template>
+  <script>
+    Polymer({
+      is: 'moggill-audio',
+      properties: {
+        title: {type:String},
+        src: {type:String},
+        currentTime: {type:String,value:.0001},
+        isPlaying: {
+          type: Boolean,
+          value: false
+        },
+      },
+      toggle: function(e) {
+        e.preventDefault();
+        if (this.$.audio.paused) {
+          this.$.audio.play();
+          this.isPlaying = true;
+        } else {
+          this.$.audio.pause();
+          this.isPlaying = false;
+        }
+      },
+      // Register event listeners
+
+listeners: {
+  'audio.loadedmetadata': '_onCanPlay',
+  'audio.playing':        '_startProgressTimer',
+  'audio.ended':  '_endAudio'
+},
+
+// When metadata is loaded and player can start playing
+
+_onCanPlay: function() {
+  var player = this;
+  player.$.progress.max = player.$.audio.duration * 1000;
+  player.duration = player.$.audio.duration;
+},
+
+// Start the progress timer
+
+_startProgressTimer: function() {
+
+  var player = this;
+  player.timer = {};
+
+  if (player.timer.sliderUpdateInterval) {
+    clearInterval(player.timer.sliderUpdateInterval);
+  };
+
+  player.timer.sliderUpdateInterval = setInterval( function(){
+    if (player.$.audio.paused) {
+      clearInterval(player.timer.sliderUpdateInterval);
+    } else {
+      player.$.progress.value = player.$.audio.currentTime * 1000;
+      player.currentTime = player.$.audio.currentTime;
+    }
+  }, 30);
+},
+
+_convertSecToMin: function(seconds){
+  if (seconds === 0) {
+    return '';
+  }
+  var minutes = Math.floor(seconds / 60);
+  var secondsToCalc = Math.floor(seconds % 60) + '';
+  return minutes + ':' + (secondsToCalc.length < 2 ? '0' + secondsToCalc : secondsToCalc);
+},
+
+_endAudio: function() {
+  this.isPlaying = false;
+}
+    });
+  </script>
+</dom-module>

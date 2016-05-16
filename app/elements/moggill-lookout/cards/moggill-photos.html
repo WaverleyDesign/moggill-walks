@@ -1,0 +1,54 @@
+<dom-module id="moggill-photos">
+  <template>
+    <style include="shared-styles"></style>
+    <style include="iron-flex iron-flex-alignment"></style>
+    <style>
+    :host {
+      display: block;
+      @apply(--layout-vertical);
+      @apply(--layout-center);
+      width: 100%;
+    }
+    .vert-photo {
+      height: 128px;
+      width: 78px;
+      margin-right: 8px;
+      background-color: var(--paper-grey-900);
+      margin-top: 8px;
+    }
+
+    .hori-photo {
+      height: 128px;
+      width: 242px;
+      margin-right: 8px;
+      background-color: var(--paper-grey-900);
+      margin-top: 8px;
+    }
+    </style>
+
+    <paper-card>
+      <div class="card-content">
+        <h2 class="card-title">Photos</h2>
+        <h4 class="card-subtitle">Old</h4>
+        <div class="photo-grid horizontal layout wrap">
+          <div class="vert-photo"></div>
+          <div class="hori-photo"></div>
+          <div class="vert-photo"></div>
+          <div class="vert-photo"></div>
+        </div>
+        <h4 class="card-subtitle">New</h4>
+        <div class="photo-grid horizontal layout wrap">
+          <div class="hori-photo"></div>
+          <div class="vert-photo"></div>
+          <div class="hori-photo"></div>
+        </div>
+      </div>
+    </paper-card>
+
+  </template>
+  <script>
+    Polymer({
+      is: 'moggill-photos'
+    });
+  </script>
+</dom-module>

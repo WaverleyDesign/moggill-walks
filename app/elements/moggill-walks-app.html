@@ -1,0 +1,116 @@
+
+<dom-module id="moggill-walks-app">
+  <template>
+
+    <iron-pages selected="0" entry-animation="ripple-animation" exit-animation="ripple-animation">
+      <section>
+        <div class="welcomeBox">
+          <h1>
+            <span class="moggill heading">Moggill</span>
+          </h1>
+          <h1>
+              <span class="walks heading">Walks</span>
+          </h1>
+          <span class="spacer"></span>
+          <paper-button class="startButton">Start tour</paper-button>
+          <h1><span class="moggill"><i>OR</i></span></h1>
+          <paper-button class="startButton">Browse points</paper-button>
+        </div>
+
+
+    <a href="http://www.waverleydesigncompany.com">
+    <div style="margin: 16px;" class="bottom-sheet">
+    <span class="moggill">Waverley</span>
+    <span>Design Company</span>
+    </div>
+    </a>
+
+
+      </section>
+      <section>
+        <paper-scroll-header-panel main fixed>
+
+          <paper-toolbar>
+            <div class="app-name">
+              <span class="moggill">Moggill</span><span class="walks">Walks</span>
+            </div>
+            <span class="flex"></span>
+            <a href="{{baseUrl}}" data-route="home">
+              <iron-icon style="color:black" icon="image:camera-alt"></iron-icon>
+            </a>
+
+          </paper-toolbar>
+          <div class="fixeddrawer">
+
+            <moggill-sidebar-menu></moggill-sidebar-menu>
+
+            <paper-item style="position:fixed;bottom:0px;left:0px;width:100%;">
+              <iron-icon icon="settings"></iron-icon>
+              <span style="padding-left:16px">Settings</span>
+            </paper-item>
+          </div>
+          <iron-pages class="marginalisedleft content" attr-for-selected="data-route" selected="{{route}}">
+
+                      <section data-route="home">
+                        <moggill-filter key="01"></moggill-filter>
+                      </section>
+                      <section data-route="test">
+                        <paper-input label="" value="{{value}}"></paper-input>
+                        <moggill-filter key="{{value}}"></moggill-filter>
+                      </section>
+                      <section data-route="filter">
+                        <a data-route="moggill-filter" href="{{baseUrl}}filter/hey">Hey</a>
+                        <a data-route="moggill-filter" href="{{baseUrl}}filter/01">Key 01</a>
+                      </section>
+                      <section data-route="moggill-filter">
+                        <h1>"{{params.term}}"</h1>
+
+                        <moggill-filter key="{{params.term}}"></moggill-filter>
+                      </section>
+
+          </iron-pages>
+
+
+
+
+    <paper-material hidden class="horizontal justified center layout bottom-sheet" elevation="4">
+      <paper-icon-button icon="chevron-left"></paper-icon-button>
+      <paper-icon-button icon="menu"></paper-icon-button>
+      <paper-icon-button icon="chevron-right"></paper-icon-button>
+    </paper-material>
+
+    </paper-scroll-header-panel>
+      </section>
+      <section>
+        <paper-toolbar>
+          <paper-icon-button style="color:black" icon="arrow-back"></paper-icon-button>
+          <div class="app-name">
+            <span class="moggill marginalised">Browse</span>
+          </div>
+        </paper-toolbar>
+        <div class="content">
+            <template is="dom-repeat" items="{{points}}" as="point" index-as="index">
+              <div class="horizontal layout">
+                <div class="item-icon">
+                  {{point.number}}
+                </div>
+                <paper-item>
+                  <paper-item-body two-line>
+                    <div>{{point.heading}}</div>
+                    <div secondary class="caption">{{point.caption}}</div>
+                  </paper-item-body>
+                </paper-item>
+              </div>
+            </template>
+        </div>
+      </section>
+    </iron-pages>
+
+
+  </template>
+  <script>
+    Polymer({
+      is: 'moggill-walks-app'
+    });
+  </script>
+</dom-module>

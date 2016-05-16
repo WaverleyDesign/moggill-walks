@@ -1,0 +1,76 @@
+<link rel="import" href="../../styles/shared-styles.html">
+
+<dom-module id="moggill-lookout">
+  <template>
+    <style include="shared-styles"></style>
+    <style include="iron-flex iron-flex-alignment"></style>
+    <style>
+      :host {
+        display: block;
+      }
+
+      .container {
+        @apply(--layout-vertical);
+        @apply(--layout-center);
+      }
+
+
+          google-map {
+            height: 300px;
+          }
+    </style>
+
+<div class="container">
+  <h1>{{title}}</h1>
+
+
+  <paper-card>
+    <div class="card-content">
+      <h1>{{title}}</h1>
+      <p>{{description}}</p>
+      <google-map disable-default-ui map-type="hybrid" latitude="{{latitude}}" longitude="{{longitude}}" zoom="{{zoom}}">
+          <!--<google-map-marker latitude="{{markerLat}}" longitude="{{markerLong}}"
+              title="hello" draggable="false" drag-events>-->
+              <google-map-marker latitude="{{markerLat}}" longitude="{{markerLong}}"
+                                 title="{{markerTitle}}" draggable="false" drag-events>
+
+                  <h2 style="margin:0px;">{{markerTitle}}</h2>
+                  <img src$="{{markerImg}}" alt="{{markerTitle}}" />
+
+              </google-map-marker>
+      </google-map>
+    </div>
+  </paper-card>
+
+  <moggill-video
+    video-id="{{videoId}}"
+  ></moggill-video>
+
+  <moggill-audio track="http://www.freesound.org/data/previews/342/342647_1038806-lq.mp3"></moggill-audio>
+
+  <moggill-html title="Photos" html="{{photosHtml}}"></moggill-html>
+  <moggill-html title="References" html="{{referencesHtml}}"></moggill-html>
+  <moggill-html title="Transcript" html="{{transcriptHtml}}"></moggill-html>
+</div>
+
+
+
+
+
+
+
+  </template>
+  <script>
+    Polymer({
+      is: 'moggill-lookout',
+      properties: {
+        title: {type: String,},
+        videoId: {type: String,},
+        references: {
+          type: Array,
+        },
+      },
+
+    });
+  </script>
+</dom-module>

@@ -1,0 +1,106 @@
+<dom-module id="moggill-video">
+  <template>
+    <style include="shared-styles"></style>
+    <style include="iron-flex iron-flex-alignment"></style>
+    <style>
+
+    :host {
+      display: block;
+      @apply(--layout-vertical);
+      @apply(--layout-center);
+      width: 100%;
+    }
+    paper-slider {
+      width: 100%;
+    }
+
+    .card-content, .card-actions {
+      padding: 0px
+    }
+
+    .time {
+      margin-right: 8px;
+    }
+    </style>
+    <paper-card>
+      <div class="card-content">
+        <google-youtube id="googleYouTube"
+                          playsupported="{{playSupported}}"
+                          video-id="{{videoId}}"
+                          state="{{state}}"
+                          currenttime="{{currentTime}}"
+                          currenttimeformatted="{{currentTimeFormatted}}"
+                          duration="{{duration}}"
+                          chromeless
+                          fluid
+                          durationformatted="{{durationFormatted}}"
+                          fractionloaded="{{fractionLoaded}}"
+                          on-google-youtube-state-change="handleStateChange"
+                          on-google-youtube-error="handleYouTubeError">
+          </google-youtube>
+      </div>
+      <div class="card-actions horizontal layout center">
+        <paper-icon-button icon="av:play-arrow" id="play-video"
+          hidden="{{computePlayDisabled(state, playSupported)}}"
+          on-tap="handlePlayVideo"></paper-icon-button>
+          <paper-icon-button icon="av:pause" id="pause-video"
+            hidden="{{computePauseDisabled(state)}}"
+            on-tap="handlePauseVideo"></paper-icon-button>
+            <paper-slider id="slider" max="{{duration}}" value="{{updater}}"></paper-slider>
+            <span class="time">
+              <span>{{currentTimeFormatted}}</span> / <span>{{durationFormatted}}</span>
+            </span>
+      </div>
+    </paper-card>
+
+
+
+  </template>
+  <script>
+    Polymer({
+      is: 'moggill-video',
+      properties: {
+    playSupported: Boolean,
+    state: String,
+    currentTime: {type: Number, observer: 'currentTimeChanged'},
+    updater: {type: Number, observer: 'updaterTimeChanged'},
+    currentTimeFormatted: String,
+    duration: Number,
+    durationFormatted: String,
+    videoId: String,
+    fractionLoaded: Number,
+    events: {
+      type: Array,
+      value: []
+    }
+  },
+  computeProgress: function(currentTime, duration) {
+    return currentTime / duration;
+  },
+  computePlayDisabled: function(state, playSupported) {
+    return state == 1 || state == 3 || !playSupported;
+  },
+  computePauseDisabled: function(state) {
+    return state != 1 && state != 3;
+  },
+  handleStateChange: function(ev) {
+    this.events.push({data: ev.detail.data});
+  },
+  handleYouTubeError: function(ev) {
+    console.error('YouTube playback error', ev.detail);
+  },
+  handlePlayVideo: function(ev) {
+    this.$.googleYouTube.play();
+  },
+  handlePauseVideo: function(ev) {
+    this.$.googleYouTube.pause();
+  },
+  currentTimeChanged: function() {
+    this.$.slider.value = this.currentTime;
+  },
+  updaterTimeChanged: function() {
+    this.$.googleYouTube.seekTo(this.$.slider.value);
+  },
+    });
+  </script>
+</dom-module>

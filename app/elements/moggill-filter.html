@@ -1,0 +1,41 @@
+<dom-module id="moggill-filter">
+  <template>
+
+    <template is="dom-repeat" items="{{pages}}"
+    filter="isEngineer" observe="type manager.type">
+        <moggill-lookout
+          title="{{item.title}}"
+          description="{{item.description}}"
+          latitude="{{item.latitude}}"
+          longitude="{{item.longitude}}"
+          marker-title="{{item.markerTitle}}"
+          marker-lat="{{item.markerLat}}"
+          marker-long="{{item.markerLong}}"
+          marker-title="{{item.markerTitle}}"
+          marker-img="{{item.markerImg}}"
+          video-id="{{item.videoId}}"
+          photos-html="{{item.photosHtml}}"
+          transcript-html="{{item.transcriptHtml}}"
+          references-html="{{item.referencesHtml}}"
+
+          ></moggill-lookout>
+    </template>
+  </template>
+
+  <script>
+    Polymer({
+      is: "moggill-filter",
+      properties: {
+        key: {
+          type: Number,
+        },
+        pages: Array,
+
+      },
+      isEngineer: function(item) {
+        return item.key == this.key;
+      },
+
+    });
+  </script>
+</dom-module>

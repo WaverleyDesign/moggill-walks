@@ -1,0 +1,87 @@
+<dom-module id="moggill-sidebar-menu">
+  <template>
+    <style include="shared-styles"></style>
+    <style>
+    paper-item {
+    --paper-item: {
+      cursor: pointer;
+    };
+  }
+
+  .sublist paper-item {
+    padding-left: 30px;
+    min-height: 36px;
+    font-size: 14px;
+  }
+
+  paper-item {
+    border-bottom: 1px solid var(--paper-grey-200);
+  }
+
+  paper-menu.sublist {
+    padding: 0px
+  }
+    </style>
+
+    <paper-menu selected="{{selected}}" attr-for-selected="{{attrForSelected}}">
+      <paper-submenu>
+        <paper-item class="menu-trigger">Ferry Route</paper-item>
+        <paper-menu class="menu-content sublist">
+          <paper-item name="ferry">Ferry</paper-item>
+          <paper-item name="shield">Shield</paper-item>
+          <paper-item>Aitcheson</paper-item>
+          <paper-item>Aitcheson St. Mine</paper-item>
+          <paper-item>Riverside Colliery</paper-item>
+          <paper-item>Mackay House</paper-item>
+          <paper-item>Mackay Pineapple Farm</paper-item>
+          <paper-item>Westaway</paper-item>
+          <paper-item>Hanly House</paper-item>
+          <paper-item>Methodist Church</paper-item>
+          <paper-item>Anglican Church</paper-item>
+          <paper-item>Catholic Church</paper-item>
+          <paper-item>Montgomery Shop</paper-item>
+          <paper-item>Dallinger</paper-item>
+        </paper-menu>
+      </paper-submenu>
+      <paper-submenu>
+        <paper-item class="menu-trigger">Moggill Road Route</paper-item>
+        <paper-menu class="menu-content sublist">
+          <paper-item>Doyle</paper-item>
+          <paper-item>Twine</paper-item>
+        </paper-menu>
+      </paper-submenu>
+      <paper-submenu>
+        <paper-item class="menu-trigger">Weekes and Livesay Roads</paper-item>
+        <paper-menu class="menu-content sublist">
+          <paper-item>Doyle</paper-item>
+          <paper-item>Twine</paper-item>
+        </paper-menu>
+      </paper-submenu>
+      <paper-submenu>
+        <paper-item class="menu-trigger">Priors Pocket Road</paper-item>
+        <paper-menu class="menu-content sublist">
+          <paper-item>Doyle</paper-item>
+          <paper-item>Twine</paper-item>
+        </paper-menu>
+      </paper-submenu>
+    </paper-menu>
+
+  </template>
+  <script>
+    Polymer({
+      is: 'moggill-sidebar-menu',
+      properties: {
+        mobile: {
+          type: Boolean,
+          value: false
+        },
+        quarry: {
+          type: Array,
+        },
+      },
+      ready: function() {
+
+      },
+    });
+  </script>
+</dom-module>
